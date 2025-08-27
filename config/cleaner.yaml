@@ -1,0 +1,51 @@
+# Agentic Cleaners 설정 파일
+# 텍스트 및 마크다운 정제를 위한 AI 모델 및 템플릿 설정
+
+cleaner:
+  # AI 모델 설정
+  model:
+    # 사용할 AI 모델 이름 (Fireworks AI 모델 또는 다른 LLM 제공자)
+    name: "fireworks_ai/accounts/fireworks/models/gpt-oss-20b"
+    
+    # 생성할 최대 토큰 수 (긴 문서 처리 시 높게 설정)
+    max_tokens: 100000
+    
+    # 창의성 조절 (0.0-1.0, 낮을수록 일관성 있는 결과)
+    temperature: 0.1
+    
+    # 토큰 선택 범위 조절 (0.0-1.0, 높을수록 다양한 선택)
+    top_p: 0.9
+    
+    # 스트리밍 응답 사용 여부 (실시간 결과 확인 가능)
+    stream: true
+
+  # 템플릿 파일 설정
+  templates:
+    # 템플릿 파일들이 위치한 디렉토리
+    base_path: "prompts"
+    
+    # 일반 텍스트 정제용 템플릿 파일명
+    text_template: "refine_text.mustache"
+    
+    # 마크다운 문서 정제용 템플릿 파일명
+    markdown_template: "refine_markdown.mustache"
+
+  # 텍스트 정제 전용 설정
+  text_refinement:
+    # 텍스트 정제 시 모델 파라미터 오버라이드
+    model_overrides:
+      # 텍스트 정제 시 더 보수적인 온도 설정
+      temperature: 0.1
+      
+      # 텍스트 정제 시 토큰 선택 범위
+      top_p: 0.9
+
+  # 마크다운 정제 전용 설정  
+  markdown_refinement:
+    # 마크다운 정제 시 모델 파라미터 오버라이드
+    model_overrides:
+      # 마크다운 정제 시 더 보수적인 온도 설정
+      temperature: 0.1
+      
+      # 마크다운 정제 시 토큰 선택 범위
+      top_p: 0.9
