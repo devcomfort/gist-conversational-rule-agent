@@ -6,16 +6,16 @@
 
 ```
 📦 학칙 에이전트 시스템
-└── 📄 app_lvrag.py         - PDF RAG¹ 시스템 (학칙 문서 전용)
+└── 📄 app.py              - PDF RAG¹ 시스템 (학칙 문서 전용)
 ```
 
 ---
 
-## 📄 **app_lvrag.py** - 학칙 문서 RAG 시스템 심층 분석
+## 📄 **app.py** - 학칙 문서 RAG 시스템 심층 분석
 
 ### **🏗️ 아키텍처 개요**
 
-app_lvrag.py는 265줄의 Python 코드로 구성된 완전한 RAG(Retrieval-Augmented Generation) 시스템입니다. 학칙, 규정, 정책 문서 등의 PDF 파일을 처리하고 관련 질문에 대해 정확한 답변을 제공하는 것을 목적으로 합니다.
+app.py는 265줄의 Python 코드로 구성된 완전한 RAG(Retrieval-Augmented Generation) 시스템입니다. 학칙, 규정, 정책 문서 등의 PDF 파일을 처리하고 관련 질문에 대해 정확한 답변을 제공하는 것을 목적으로 합니다.
 
 ### **🔧 핵심 기술 스택**
 
