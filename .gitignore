@@ -214,3 +214,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# GIST Rules Analyzer logs and data
+chat_logs*/
+chat_logs/
+performance_logs/
+faiss_db/
+.gradio/
+
+# Large data files and documents
+rules/
+*.faiss
+*.pkl
+*.index
+
+# Sensitive or large content
+temp_files/
+cached_data/
+
+20250828 GIST 학칙 모음.zip

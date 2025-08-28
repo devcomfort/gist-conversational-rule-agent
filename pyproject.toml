@@ -6,50 +6,77 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     # === AI/ML 프레임워크 ===
-    "gradio>=5.43.1", # 웹 인터페이스 프레임워크 - Gradio UI 구성
-    "openai>=1.101.0", # OpenAI API 클라이언트 - GPT/o1/o3 모델 연동
-    "litellm>=1.76.0", # 통합 LLM API - 다양한 LLM 제공자 지원
+    "gradio>=5.43.1",
+    # 웹 인터페이스 프레임워크 - Gradio UI 구성
+    "openai>=1.101.0",
+    # OpenAI API 클라이언트 - GPT/o1/o3 모델 연동
+    "litellm>=1.76.0",
+    # 통합 LLM API - 다양한 LLM 제공자 지원
     # === LangChain 생태계 ===
-    "langchain>=0.3.27", # LangChain 코어 프레임워크
-    "langchain-core>=0.3.74", # LangChain 핵심 추상화 계층
-    "langchain-community>=0.3.27", # 커뮤니티 통합 (FAISS, 검색 도구)
-    "langchain-text-splitters>=0.3.9", # 텍스트 분할기 (PDF 청킹)
-    "langchain-openai>=0.3.31", # OpenAI 모델 연동
-    "langchain-groq>=0.3.7", # GROQ 모델 연동 (고속 추론)
-    "langchain-huggingface>=0.3.1", # HuggingFace 모델 연동 (임베딩)
-    "langgraph>=0.6.6", # 에이전트 워크플로우 그래프
+    "langchain>=0.3.27",
+    # LangChain 코어 프레임워크
+    "langchain-core>=0.3.74",
+    # LangChain 핵심 추상화 계층
+    "langchain-community>=0.3.27",
+    # 커뮤니티 통합 (FAISS, 검색 도구)
+    "langchain-text-splitters>=0.3.9",
+    # 텍스트 분할기 (PDF 청킹)
+    "langchain-openai>=0.3.31",
+    # OpenAI 모델 연동
+    "langchain-groq>=0.3.7",
+    # GROQ 모델 연동 (고속 추론)
+    "langchain-huggingface>=0.3.1",
+    # HuggingFace 모델 연동 (임베딩)
+    "langgraph>=0.6.6",
+    # 에이전트 워크플로우 그래프
     # === 벡터 데이터베이스 ===
-    "faiss-cpu>=1.12.0", # FAISS 벡터 검색 엔진 - 의미론적 검색
-    "chromadb>=1.0.20", # ChromaDB 벡터 데이터베이스 - 임베딩 저장소
+    "faiss-cpu>=1.12.0",
+    # FAISS 벡터 검색 엔진 - 의미론적 검색
+    "chromadb>=1.0.20",
+    # ChromaDB 벡터 데이터베이스 - 임베딩 저장소
     # === AI 모델 허브 ===
-    "huggingface-hub>=0.34.4", # HuggingFace 모델 허브 - 임베딩/VL 모델
+    "huggingface-hub>=0.34.4",
+    # HuggingFace 모델 허브 - 임베딩/VL 모델
     # === 문서 처리 ===
-    "pymupdf>=1.26.4", # PDF 텍스트 추출 - PyMuPDF (fitz)
-    "pillow>=11.3.0", # 이미지 처리 - PIL/Pillow
+    "pymupdf>=1.26.4",
+    # PDF 텍스트 추출 - PyMuPDF (fitz)
+    "pillow>=11.3.0",
+    # 이미지 처리 - PIL/Pillow
     # === 데이터 분석 ===
-    "pandas>=2.3.2", # 데이터프레임 - Excel 파일 처리
-    "numpy>=2.3.2", # 수치 연산 - 배열 처리
+    "pandas>=2.3.2",
+    # 데이터프레임 - Excel 파일 처리
+    "numpy>=2.3.2",
+    # 수치 연산 - 배열 처리
     # === 웹 검색 ===
-    "tavily-python>=0.7.11", # Tavily 검색 API - 실시간 웹 검색
+    "tavily-python>=0.7.11",
+    # Tavily 검색 API - 실시간 웹 검색
     # === 유틸리티 ===
-    "python-dotenv>=1.1.1", # 환경변수 관리 - .env 파일 로드
-    "requests>=2.32.5", # HTTP 요청 - API 호출
-    "typing-extensions>=4.15.0", # 타입 힌팅 확장
-    
+    "python-dotenv>=1.1.1",
+    # 환경변수 관리 - .env 파일 로드
+    "requests>=2.32.5",
+    # HTTP 요청 - API 호출
+    "typing-extensions>=4.15.0",
+    # 타입 힌팅 확장
+    # === 설정 관리 ===
+    "hydra-core>=1.3.2",
+    # Hydra 설정 프레임워크 - 계층적 설정 관리
+    "omegaconf>=2.3.0",
+    # OmegaConf - Hydra의 설정 구조화
+    "pyyaml>=6.0.1",
+    # YAML 파일 파싱 - 설정 파일 로드
     # === LlamaIndex 생태계 (LangChain 대체) ===
-    "llama-index>=0.12.52",                      # LlamaIndex 코어 프레임워크 - RAG 시스템
-    "llama-index-llms-litellm>=0.5.1",           # LiteLLM 연동 - 통합 LLM API
-    "llama-index-embeddings-huggingface>=0.5.5", # HuggingFace 임베딩 모델
-    "llama-index-vector-stores-faiss>=0.4.0",    # FAISS 벡터 스토어
-    "llama-index-vector-stores-chroma>=0.4.2",   # ChromaDB 벡터 스토어
-    
+    "llama-index>=0.12.52",
+    # LiteLLM 연동 - 통합 LLM API
+    "llama-index-embeddings-huggingface>=0.5.5",
+    # HuggingFace 임베딩 모델
+    "llama-index-vector-stores-faiss>=0.4.0",
+    # FAISS 벡터 스토어
+    "llama-index-vector-stores-chroma>=0.4.2",
+    # ChromaDB 벡터 스토어
     # === SmolAgents 생태계 (코드 실행 및 도구) ===
-    "smolagents>=1.21.2",                        # 경량 코드 중심 에이전트 프레임워크
+    "smolagents>=1.21.2",
+    # 경량 코드 중심 에이전트 프레임워크
+    "pystache>=0.6.8",
+    "llama-index-llms-litellm>=0.5.1",
+    "sentence-transformers>=5.1.0",
 ]
-
-# === CLI 스크립트 정의 ===
-[project.scripts]
-# RAG 시스템 배포 명령어들
-deploy-rag = "app_lvrag:main"              # 기본 배포 (공개 링크 포함)
-deploy-rag-dev = "app_lvrag:main_dev"      # 개발용 배포 (로컬만, 포트 7860)
-deploy-rag-prod = "app_lvrag:main_prod"    # 프로덕션 배포 (외부 접근 가능, PORT 환경변수 사용)
