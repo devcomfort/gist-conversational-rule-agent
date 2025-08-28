@@ -1,14 +1,13 @@
-# Agentic Cleaners 설정 파일
-# 텍스트 및 마크다운 정제를 위한 AI 모델 및 템플릿 설정
+# llama-index에 제공할 metadata extractor 파라미터 설정 파일
 
-cleaner:
+metadata_extractor:
   # AI 모델 설정
   model:
     # 사용할 AI 모델 이름 (Fireworks AI 모델 또는 다른 LLM 제공자)
     name: "fireworks_ai/accounts/fireworks/models/gpt-oss-20b"
     
     # 생성할 최대 토큰 수 (긴 문서 처리 시 높게 설정)
-    max_tokens: 100000
+    max_tokens: 10000
     
     # 창의성 조절 (0.0-1.0, 낮을수록 일관성 있는 결과)
     temperature: 0.1
@@ -17,13 +16,4 @@ cleaner:
     top_p: 0.9
     
     # 스트리밍 응답 사용 여부 (실시간 결과 확인 가능)
-    stream: true
-
-  # 템플릿 파일 설정
-  templates:
-    # TODO: 에이전트별 템플릿 경로만 지정하기.
-    # 템플릿 파일들이 위치한 디렉토리
-    base_path: "templates"
-        
-    # 마크다운 문서 정제용 템플릿 파일명
-    markdown_template: "refine_markdown.mustache"
+    stream: false
