@@ -7,6 +7,7 @@ from .is_pdf import is_pdf
 from .is_ppt import is_ppt
 from .is_pptx import is_pptx
 from .is_txt import is_txt
+from .types import DocumentKind
 
 __all__ = [
     "get_mime_type",
@@ -18,4 +19,5 @@ __all__ = [
     "is_ppt",
     "is_pptx",
     "is_txt",
+    "DocumentKind",
 ]
