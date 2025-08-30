@@ -33,6 +33,16 @@ class Config:
     cleaner: CleanerConfig = field(default_factory=CleanerConfig)
 
 
+# 사용자가 함수 호출로 입력할 수 있는 모델 입력값 (모두 선택 사항) - 함수 파라미터 스키마
+@dataclass(frozen=True)
+class ModelInput:
+    name: str | None = None
+    max_tokens: int | None = None
+    temperature: float | None = None
+    top_p: float | None = None
+    stream: bool | None = None
+
+
 # ConfigStore에 스키마 등록 (Hydra 1.2 호환)
 cs = ConfigStore.instance()
 cs.store(name="cleaner_schema", node=Config)
