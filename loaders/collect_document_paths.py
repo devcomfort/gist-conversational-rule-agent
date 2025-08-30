@@ -22,7 +22,13 @@ def _iter_document_paths(root_path: Path) -> Iterator[Path]:
             for name in filenames:
                 file_path = Path(dirpath) / name
                 try:
-                    if is_document(str(file_path)):
+                    kind = is_document(str(file_path))
+                    if kind is not None:
+                        logger.debug(
+                            "collect_document_paths: detected kind={} for {}",
+                            kind,
+                            file_path,
+                        )
                         yield file_path
                 except Exception as e:
                     # MIME 추측 실패 등 모든 예외를 DEBUG로 기록하고 계속 진행
@@ -38,17 +44,25 @@ def _iter_document_paths(root_path: Path) -> Iterator[Path]:
 
 
 @overload
-def collect_document_paths(root: Path | str, *, lazy: Literal[True]) -> Iterable[Path]:
-    ...
+def collect_document_paths(root: Path | str) -> Iterable[Path]: ...
 
 
 @overload
-def collect_document_paths(root: Path | str, *, lazy: Literal[False] = ...) -> List[Path]:
-    ...
+def collect_document_paths(
+    root: Path | str, *, lazy: Literal[True]
+) -> Iterable[Path]: ...
+
+
+@overload
+def collect_document_paths(
+    root: Path | str, *, lazy: Literal[False] = ...
+) -> List[Path]: ...
 
 
 def collect_document_paths(
-    root: Path | str, *, lazy: bool = False
+    root: Path | str,
+    *,
+    lazy: bool = True,
 ) -> Iterable[Path] | List[Path]:
     """루트 경로 하위에서 로드 가능한 문서 파일 경로를 수집합니다.
 
@@ -64,12 +78,10 @@ def collect_document_paths(
         Iterable[Path] | List[Path]: 문서 파일 경로 컬렉션
     """
     root_path = Path(root)
-    if lazy:
-        return _iter_document_paths(root_path)
 
-    results = list(_iter_document_paths(root_path))
-    results.sort()
-    return results
+    document_paths = _iter_document_paths(root_path)
+
+    return document_paths if lazy else list(document_paths)
 
 
 __all__ = ["collect_document_paths"]
