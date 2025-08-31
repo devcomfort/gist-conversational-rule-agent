@@ -20,6 +20,7 @@ from loguru import logger
 import pystache
 from llama_index.core import Document
 import litellm
+import time
 
 from config.load_cleaner_config import load_cleaner_config, get_template_path
 from config.load_cleaner_config.types import ModelInput, ModelConfig
@@ -208,31 +209,14 @@ def refine_as_markdown(
             return f"- {key}: {new_val} (유지)"
         return f"- {key}: {old_val} -> {new_val} (변경)"
 
+    # 최소 로그: 파라미터 핵심만 요약
     logger.info(
-        "적용 파라미터 요약:\n{}",
-        "\n".join(
-            [
-                _render_change_line(
-                    "name", loaded_params["name"], applied_params["name"]
-                ),
-                _render_change_line(
-                    "max_tokens",
-                    loaded_params["max_tokens"],
-                    applied_params["max_tokens"],
-                ),
-                _render_change_line(
-                    "temperature",
-                    loaded_params["temperature"],
-                    applied_params["temperature"],
-                ),
-                _render_change_line(
-                    "top_p", loaded_params["top_p"], applied_params["top_p"]
-                ),
-                _render_change_line(
-                    "stream", loaded_params["stream"], applied_params["stream"]
-                ),
-            ]
-        ),
+        "정제 파라미터: model={}, max_tokens={}, temperature={}, top_p={}, stream={}",
+        applied_params["name"],
+        applied_params["max_tokens"],
+        applied_params["temperature"],
+        applied_params["top_p"],
+        applied_params["stream"],
     )
 
     # 문서 내용 추출
@@ -250,6 +234,7 @@ def refine_as_markdown(
     prompt = pystache.render(template, render_data)
 
     try:
+        t0 = time.perf_counter()
         logger.info("마크다운 정제 시작 - 모델: {}", model_name)
 
         completion_fn: Callable[..., Any] = cast(
@@ -346,6 +331,12 @@ def refine_as_markdown(
         # 모듈 전역 메트릭 저장 (메인 가드에서 출력)
         globals()["_LAST_RUN_METRICS"] = metrics
 
+        elapsed_ms = (time.perf_counter() - t0) * 1000.0
+        logger.info(
+            "마크다운 정제 완료 - 길이: {}, elapsed_ms={:.1f}",
+            len(final_text or ""),
+            elapsed_ms,
+        )
         return final_text
 
     except Exception as e:
