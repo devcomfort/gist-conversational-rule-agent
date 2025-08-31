@@ -233,3 +233,5 @@ temp_files/
 cached_data/
 
 20250828 GIST 학칙 모음.zip
+# Ignore local test entrypoints
+test.py
