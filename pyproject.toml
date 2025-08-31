@@ -79,4 +79,11 @@ dependencies = [
     "pystache>=0.6.8",
     "llama-index-llms-litellm>=0.5.1",
     "sentence-transformers>=5.1.0",
+    "kneed>=0.8.5",
+    "chonkie[all,viz]>=1.2.1",
+    "toolz>=1.0.0",
+    "accelerate>=1.10.1",
+    "loguru>=0.7.3",
+    "joblib>=1.5.1",
+    "structlog>=25.4.0",
 ]
