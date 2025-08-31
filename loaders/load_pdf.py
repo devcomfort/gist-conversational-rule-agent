@@ -5,7 +5,7 @@ from llama_index.readers.file import PDFReader
 from llama_index.core import Document
 
 from toolz import pipe
-from utils.is_pdf import is_pdf
+from utils.validators import is_pdf
 
 
 def load_pdf(

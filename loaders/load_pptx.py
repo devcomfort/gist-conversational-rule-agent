@@ -5,7 +5,7 @@ from llama_index.core.schema import Document
 from llama_index.readers.file import PptxReader
 
 from toolz import pipe
-from utils.is_pptx import is_pptx
+from utils.validators import is_pptx
 
 
 def load_pptx(path: Union[str, Path]) -> List[Document]:

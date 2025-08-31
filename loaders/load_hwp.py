@@ -5,7 +5,7 @@ from llama_index.readers.file import HWPReader
 from llama_index.core import Document
 
 from toolz import pipe
-from utils.is_hwp import is_hwp
+from utils.validators import is_hwp
 
 
 def load_hwp(path: Union[str, Path]) -> List[Document]:

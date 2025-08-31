@@ -5,7 +5,7 @@ from llama_index.core.schema import Document
 from llama_index.readers.file import DocxReader
 
 from toolz import pipe
-from utils.is_docx import is_docx
+from utils.validators import is_docx
 
 
 def load_docx(path: Union[str, Path]) -> List[Document]:

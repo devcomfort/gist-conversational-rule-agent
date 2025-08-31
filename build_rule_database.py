@@ -23,10 +23,7 @@ from pathlib import Path
 from typing import List
 
 # 형식 판별 유틸리티
-from utils.is_pdf import is_pdf
-from utils.is_hwp import is_hwp
-from utils.is_docx import is_docx
-from utils.is_pptx import is_pptx
+from utils.validators import is_pdf, is_hwp, is_docx, is_pptx
 
 
 RULES_DIR = Path("rules")
