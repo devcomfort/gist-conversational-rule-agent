@@ -1,0 +1,6 @@
+[core]
+    remote = r2
+['remote "r2"']
+    url = s3://PLACEHOLDER_BUCKET/dvc
+    endpointurl = https://PLACEHOLDER_ACCOUNTID.r2.cloudflarestorage.com
+    region = auto
