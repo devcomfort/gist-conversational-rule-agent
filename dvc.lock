@@ -1,0 +1,15 @@
+schema: '2.0'
+stages:
+  rules_snapshot:
+    cmd: tar -czf artifacts/rules_snapshot.tar.gz rules
+    deps:
+    - path: rules
+      hash: md5
+      md5: 24172bd93ff4dcc886ab783d74d3c173.dir
+      size: 739831056
+      nfiles: 1518
+    outs:
+    - path: artifacts/rules_snapshot.tar.gz
+      hash: md5
+      md5: dc76f878fe354d6fa9c25149f8014761
+      size: 650645545

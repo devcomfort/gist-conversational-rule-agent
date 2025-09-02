@@ -1,0 +1,7 @@
+stages:
+  rules_snapshot:
+    cmd: tar -czf artifacts/rules_snapshot.tar.gz rules
+    deps:
+    - rules
+    outs:
+    - artifacts/rules_snapshot.tar.gz
