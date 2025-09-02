@@ -16,6 +16,11 @@ LangChain 생태계 대체 전략 및 구현 방안
 - 모듈별 우선순위와 단계적 전환 계획
 - SmolAgents + LlamaIndex 하이브리드 권장
 
+### 🗂 **DVC_OPERATIONS.md**
+DVC 운영 가이드 (Cloudflare R2 원격)
+- 초기 설정(uv, dvc, dvc-s3), 원격(R2) 구성
+- 워크플로우(dvc add/commit/push, pull), 보안/운영 권장사항
+
 ## 🎯 **핵심 대체 전략**
 1. **LlamaIndex Workflows**: 구조화된 이벤트 기반 워크플로우 
 2. **SmolAgents**: 경량 코드 중심 워크플로우 (권장)
