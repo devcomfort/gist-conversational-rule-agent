@@ -20,6 +20,8 @@ from loguru import logger
 import pystache
 from llama_index.core import Document
 import litellm
+import threading
+from hydra.core.global_hydra import GlobalHydra
 import time
 
 from config.load_cleaner_config import load_cleaner_config, get_template_path
@@ -29,6 +31,38 @@ from config.load_cleaner_config.types import ModelInput, ModelConfig
 import sys
 
 logger.add(sys.stderr, level="INFO")
+
+
+_HYDRA_LOCK = threading.Lock()
+_GLOBAL_CLEANER_CFG: Optional[Any] = None
+
+# 임시 스텁 모드: 외부 모델 호출 비활성화 후 원문을 그대로 반환합니다.
+# PoC 안정화/테스트 목적. 실제 정제 재개 시 False로 전환하거나 환경변수로 제어하세요.
+STUB_REFINER: bool = True
+
+
+# TODO: 텍스트가 너무 큰 경우, sentence chunking 한 후에 병합하는 것도 고려해야함.
+
+
+def _get_cleaner_config_threadsafe() -> Any:
+    """Hydra GlobalHydra 충돌을 피하기 위해 설정 로드를 1회로 보장합니다.
+
+    - 멀티스레드 환경에서 동시 initialize를 방지하기 위해 Lock 사용
+    - 이미 초기화된 경우 재사용
+    - 필요 시 GlobalHydra를 안전하게 clear 후 initialize
+    """
+    global _GLOBAL_CLEANER_CFG
+    if _GLOBAL_CLEANER_CFG is not None:
+        return _GLOBAL_CLEANER_CFG
+    with _HYDRA_LOCK:
+        if _GLOBAL_CLEANER_CFG is None:
+            try:
+                # 이미 초기화된 Hydra 컨텍스트가 있으면 정리
+                GlobalHydra.instance().clear()
+            except Exception:
+                pass
+            _GLOBAL_CLEANER_CFG = load_cleaner_config()
+    return _GLOBAL_CLEANER_CFG
 
 
 def _extract_text_from_stream_event(evt: Any) -> Optional[str]:
@@ -143,9 +177,14 @@ def refine_as_markdown(
         - Mustache 템플릿을 사용하여 프롬프트를 동적으로 생성
         - 문서 타입과 형식을 템플릿 변수로 전달하여 유연한 처리 지원
         - litellm 파라미터는 명시된 인자만 사용합니다. 추가 파라미터는 지원하지 않습니다. 참고: https://docs.litellm.ai/docs/completion/usage
+
+    TODO:
+        - 대용량 문서 처리: 입력 길이 상한 초과 시 chunking/windowing → 부분 정제 → 병합 전략 적용
+        - 호출 동시성 제어 및 rate limit 대응(큐/세마포어, 지수 백오프, 지터)
+        - 스트리밍/비-스트리밍 정책 정리 및 부분 실패 복구/재시도 설계
     """
     # 설정 로드
-    cfg = load_cleaner_config()
+    cfg = _get_cleaner_config_threadsafe()
 
     # dataclass 기반 파라미터 구성/적용 (인라인 병합)
     input_dc = ModelInput(
@@ -225,6 +264,11 @@ def refine_as_markdown(
     else:
         content = str(document)
 
+    # 임시 스텁: 외부 호출을 수행하지 않고 원문을 그대로 반환
+    if STUB_REFINER:
+        logger.info("정제 스텁 모드 활성화 - 외부 호출 없이 원문 반환")
+        return content
+
     # Mustache 템플릿 로드 및 렌더링
     template_path = get_template_path(cfg.cleaner.templates.markdown_template)
     with open(template_path, "r", encoding="utf-8") as f:
@@ -255,16 +299,51 @@ def refine_as_markdown(
         # 참고: LiteLLM output 포맷/속성 참조
         # https://docs.litellm.ai/docs/completion/output
 
-        response = completion_fn(
-            model=model_name,
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_tokens_val,
-            temperature=temperature_val,
-            top_p=top_p_val,
-            stream=stream_val,
-            # 스트리밍 사용 시 usage 청크 포함
-            **({"stream_options": {"include_usage": True}} if stream_val else {}),
-        )
+        # 네트워크 일시 오류 완화를 위한 단순 재시도/백오프
+        max_attempts = 3
+        base_delay_s = 0.5
+        last_err: Optional[Exception] = None
+        response = None
+        for attempt in range(1, max_attempts + 1):
+            try:
+                response = completion_fn(
+                    model=model_name,
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens_val,
+                    temperature=temperature_val,
+                    top_p=top_p_val,
+                    stream=stream_val,
+                    # 스트리밍 사용 시 usage 청크 포함
+                    **(
+                        {"stream_options": {"include_usage": True}}
+                        if stream_val
+                        else {}
+                    ),
+                )
+                break
+            except Exception as e:  # APIConnectionError 등 일시 오류 위주 재시도
+                last_err = e
+                msg = str(e).lower()
+                is_transient = (
+                    isinstance(e, litellm.APIConnectionError)
+                    or "bad file descriptor" in msg
+                    or "timeout" in msg
+                    or "temporarily unavailable" in msg
+                )
+                if attempt < max_attempts and is_transient:
+                    delay = base_delay_s * (2 ** (attempt - 1))
+                    logger.warning(
+                        "모델 호출 실패(일시 오류로 판단) - 재시도 {}/{}: {} ({}s 대기)",
+                        attempt,
+                        max_attempts,
+                        str(e),
+                        f"{delay:.1f}",
+                    )
+                    time.sleep(delay)
+                    continue
+                # 재시도 불가/실패: 즉시 전파
+                raise
+        assert response is not None, last_err
 
         # 최종 결과 문자열 생성
         if stream_val:

@@ -3,6 +3,7 @@ Metadata Extractor 설정 로더 - OmegaConf.structured 사용
 """
 
 from pathlib import Path
+from functools import lru_cache
 
 from hydra import compose, initialize_config_dir
 from omegaconf import OmegaConf
@@ -10,6 +11,11 @@ from omegaconf import OmegaConf
 from .types import Config, ModelConfig
 
 
+# 메모이제이션 적용 이유
+# - Hydra/OmegaConf 초기화 비용 절감 및 GlobalHydra 재초기화 충돌 방지
+# - 프로세스 내 동일 설정 반복 로드를 피하고, 1회 초기화된 구성을 재사용
+# - 필요 시 load_metadata_extractor_config.cache_clear() 호출 후 재로딩
+@lru_cache(maxsize=1)
 def load_metadata_extractor_config() -> Config:
     """metadata_extractor.yaml 설정을 로드하여 타입 안전한 Config 객체로 반환"""
     config_dir = Path(__file__).parent.parent
@@ -80,14 +86,14 @@ if __name__ == "__main__":
             from llama_index.llms.litellm import LiteLLM
 
             test_llm = LiteLLM(**llm_kwargs)
-            print(f"   • LiteLLM 인스턴스 생성: ✅")
+            print("   • LiteLLM 인스턴스 생성: ✅")
             print(f"   • 설정된 모델: {test_llm.model}")
 
             # agents/metadata_extractor.py 연동 확인
             try:
                 from agents.metadata_extractor import MetadataExtractor
 
-                print(f"   • agents.metadata_extractor 연동: ✅")
+                print("   • agents.metadata_extractor 연동: ✅")
                 print(
                     f"   • MetadataExtractor 타입: {type(MetadataExtractor).__name__}"
                 )

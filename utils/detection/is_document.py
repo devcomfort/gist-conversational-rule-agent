@@ -11,11 +11,9 @@
 
 from utils.types import DocumentKind
 from utils.validators import (
-    is_doc,
     is_docx,
     is_hwp,
     is_pdf,
-    is_ppt,
     is_pptx,
 )
 
@@ -25,7 +23,11 @@ __all__ = ["is_document"]
 def is_document(file_path: str) -> DocumentKind | None:
     """파일이 지원되는 일반 문서 형식인지 확인합니다.
 
-    지원 형식(2025-08-30 기준): PDF, HWP, DOC, DOCX, PPT, PPTX
+    지원 형식(2025-08-30 기준): PDF, HWP, DOCX, PPTX
+
+    참고:
+        - DOC/PPT 구형 형식은 llama-hub 기준 기본 리더 미지원으로 "문서"로 취급하지 않습니다.
+          (필요 시 전용 리더 도입 후 정책 변경 가능)
 
     Args:
         file_path: 검사할 파일 경로
@@ -45,10 +47,12 @@ def is_document(file_path: str) -> DocumentKind | None:
         return "hwp"
     if is_docx(file_path):
         return "docx"
-    if is_doc(file_path):
-        return "doc"
+    # DOC 구형 형식은 현재 미지원 처리 (llama-hub 리더 없음)
+    # if is_doc(file_path):
+    #     return "doc"
     if is_pptx(file_path):
         return "pptx"
-    if is_ppt(file_path):
-        return "ppt"
+    # PPT 구형 형식은 현재 미지원 처리 (llama-hub 리더 없음)
+    # if is_ppt(file_path):
+    #     return "ppt"
     return None
