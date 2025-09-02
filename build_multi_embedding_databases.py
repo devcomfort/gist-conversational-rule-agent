@@ -28,6 +28,7 @@ import time
 import glob
 import argparse
 import concurrent.futures
+import torch
 from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Optional
@@ -453,7 +454,7 @@ def build_database_for_model(model_key: str, documents_by_category, stats):
         print(f"🔧 임베딩 모델 로딩 중: {model_config['model_name']}")
         embed_model = HuggingFaceEmbeddings(
             model_name=model_config["model_name"],
-            model_kwargs={"device": "cpu"},
+            model_kwargs={"device": "cuda" if torch.cuda.is_available() else "cpu"},
             encode_kwargs={"normalize_embeddings": True},
         )
         print("✅ 임베딩 모델 로딩 완료!")
