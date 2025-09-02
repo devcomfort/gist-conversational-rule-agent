@@ -1,6 +1,6 @@
 [core]
     remote = r2
 ['remote "r2"']
-    url = s3://PLACEHOLDER_BUCKET/dvc
-    endpointurl = https://PLACEHOLDER_ACCOUNTID.r2.cloudflarestorage.com
+    url = s3://gist-rules/dvc
+    endpointurl = https://8e04cab5daaf42d690fce67e4dca6d78.r2.cloudflarestorage.com
     region = auto
