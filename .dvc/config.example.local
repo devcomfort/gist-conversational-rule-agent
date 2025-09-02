@@ -1,0 +1,8 @@
+['remote "r2"']
+    # 예시 템플릿: 실제 키는 .dvc/config.local 또는 환경변수 사용
+    # export AWS_ACCESS_KEY_ID=...
+    # export AWS_SECRET_ACCESS_KEY=...
+    access_key_id = <YOUR_ACCESS_KEY_ID>
+    secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+    # 필요시 세션 토큰 등 추가 가능
+    # session_token = <YOUR_SESSION_TOKEN>
