@@ -238,3 +238,6 @@ test.py
 /faiss_all_minilm_l6_v2
 /faiss_bge_m3
 /faiss_qwen3_embedding_0.6b
+
+# DVC local config
+.dvc/config.local
