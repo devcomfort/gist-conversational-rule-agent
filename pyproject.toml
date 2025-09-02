@@ -86,4 +86,11 @@ dependencies = [
     "loguru>=0.7.3",
     "joblib>=1.5.1",
     "structlog>=25.4.0",
+    "olefile>=0.47",
+    "matplotlib>=3.10.6",
+]
+
+[dependency-groups]
+dev = [
+    "dvc>=3.62.0",
 ]
