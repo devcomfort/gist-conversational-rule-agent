@@ -1,0 +1,6 @@
+outs:
+- md5: 9cf8cfe29f82f178cb92bd0d5794694c.dir
+  size: 58772250
+  nfiles: 4
+  hash: md5
+  path: faiss_qwen3_embedding_0.6b

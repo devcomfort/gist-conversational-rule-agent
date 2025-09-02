@@ -1,0 +1,6 @@
+outs:
+- md5: b1f7eb3ed1a49389fb939291facb39e6.dir
+  size: 29206844
+  nfiles: 4
+  hash: md5
+  path: faiss_all_minilm_l6_v2

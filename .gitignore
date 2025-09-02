@@ -235,3 +235,6 @@ cached_data/
 20250828 GIST 학칙 모음.zip
 # Ignore local test entrypoints
 test.py
+/faiss_all_minilm_l6_v2
+/faiss_bge_m3
+/faiss_qwen3_embedding_0.6b
