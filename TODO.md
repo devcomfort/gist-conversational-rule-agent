@@ -1,10 +1,16 @@
 # 📋 Project TODO - Academic Rule Agent
 
-## 🎯 **Project Status**
+## 🎯 **Project Scope**
 
-### ✅ **Phase 1: Core Infrastructure (COMPLETED)**
+**목표**: 임베딩 모델과 청킹 기법의 차이가 RAG 성능에 미치는 영향 확인 및 최적 Retriever 구성 검증
 
-- [x] **포괄적 임베딩 실험 프레임워크 구축**
+---
+
+## 📊 **Project Status**
+
+### ✅ **Phase 1: Infrastructure & Framework (COMPLETED)**
+
+- [x] **실험 프레임워크 구축**
   - [x] 28,560개 조합의 전면적 실험 시스템
   - [x] 6개 청커 × 6개 임베딩 모델 × 다양한 파라미터 조합
   - [x] 토큰화 → 청킹 → 임베딩 3단계 파이프라인
@@ -14,57 +20,53 @@
   - [x] `experiment_configurations.py`: 통합 설정 관리
   - [x] `multi_embedding_database_builder.py`: 메인 실험 실행기
   - [x] 데이터베이스 네이밍 컨벤션 설계
-  - [x] 학술 분석 템플릿 구조
+  - [x] 청킹 결과 저장 시스템 (중간 결과 보존)
 
-- [x] **임베딩 모델 최적화**
+- [x] **임베딩 모델 선정 및 최적화**
   - [x] MTEB 기반 모델 선정 (2025년 8월 기준)
   - [x] Qwen3-8B (2위), Qwen3-0.6B (4위), Jina-v3 (22위)
   - [x] BGE-M3 (23위), all-MiniLM-L6 (117위, 베이스라인)
-  - [x] 디바이스별 최적화 (CUDA/CPU 자동 감지)
 
 ---
 
-## 🚀 **Phase 2: Experiment Execution (IN PROGRESS)**
+## 🏗️ **Phase 2: Data Generation (IN PROGRESS)**
 
-### 🔄 **Priority 1: Core Experiments**
+### 🔄 **Priority 1: 청킹 데이터 생성**
 
-- [ ] **대규모 실험 실행**
-  - [ ] 28,560개 실험 조합 실행 (RTX 3090 Multi-GPU)
-  - [ ] 실험 결과 수집 및 검증
-  - [ ] 성능 메트릭 수집 (임베딩 시간, DB 크기, 검색 정확도)
+- [ ] **대규모 청킹 실험**
+  - [ ] 4,760개 청킹 조합 실행 (RTX 3090 Multi-GPU)
+  - [ ] 청킹 결과 저장 및 검증 (pickle 형태)
+  - [ ] 청킹 품질 메트릭 수집 (청크 수, 평균 길이, 분산)
+  - [ ] 청킹 실패율 모니터링 및 개선
+
+### 📊 **Priority 2: QA 데이터셋 생성**
+
+- [ ] **청킹 기반 QA 생성 시스템**
+  - [ ] 저장된 청킹 결과 기반 QA 쌍 생성
+  - [ ] 청크별 질문-답변 쌍 자동 생성
+  - [ ] SmolAgents vs LlamaIndex 성능 비교
+  - [ ] 질문 품질 자동 평가 시스템
+  - [ ] 도메인별 QA 데이터셋 구축
+
+### 🔮 **Priority 3: 임베딩 데이터셋 생성**
+
+- [ ] **청킹 결과 기반 임베딩 생성**
+  - [ ] 28,560개 조합 임베딩 실행 (청킹 결과 × 임베딩 모델)
+  - [ ] FAISS 벡터 데이터베이스 구축
+  - [ ] 임베딩 메트릭 수집 (생성 시간, DB 크기)
   - [ ] 실험 실패율 모니터링 및 개선
 
-- [ ] **결과 분석 및 검증**
-  - [ ] 청커별 성능 비교 분석
-  - [ ] 임베딩 모델별 효율성 평가
-  - [ ] 파라미터 민감도 분석
-  - [ ] 통계적 유의성 검증
-
-### 📊 **Priority 2: Visualization & Analysis**
-
-- [ ] **t-SNE 임베딩 시각화 시스템**
-  - [ ] 각 청커-파라미터-임베딩 조합별 임베딩 차원 축소
-  - [ ] 인터랙티브 시각화 구현
-  - [ ] 클러스터링 품질 평가 (Silhouette, Davies-Bouldin)
-  - [ ] 임베딩 공간 비교 분석
-
-- [ ] **Gradio 웹 인터페이스 구축**
-  - [ ] 체크박스 기반 실험 조합 선택기
-  - [ ] 실시간 임베딩 시각화
-  - [ ] 성능 메트릭 대시보드
-  - [ ] 실험 결과 다운로드 기능
-
 ---
 
-## 🔬 **Phase 3: Advanced RAG Systems (PLANNED)**
+## 🔍 **Phase 3: RAG Performance Evaluation (PLANNED)**
 
-### 🎯 **Priority 1: Knowledge Base Enhancement**
+### 🎯 **Priority 1: Retrieval 성능 평가**
 
-- [ ] **QA Generation 시스템**
-  - [ ] 저장된 청킹 결과 기반 QA 쌍 생성
-  - [ ] SmolAgents vs LlamaIndex 성능 비교
-  - [ ] 자동 질문 품질 평가 시스템
-  - [ ] 도메인별 QA 데이터셋 구축
+- [ ] **검색 성능 벤치마킹**
+  - [ ] Recall@K, Precision@K, MRR 측정
+  - [ ] 청커별 검색 정확도 비교
+  - [ ] 임베딩 모델별 검색 효율성 평가
+  - [ ] 파라미터 민감도 분석
 
 ### 📈 **Priority 2: Retrieval Strategy Optimization**
 
@@ -74,118 +76,110 @@
   - [ ] Top-K 대비 성능 향상 측정
   - [ ] 다양한 쿼리 타입별 효과성 분석
 
-- [ ] **Re-ranking 전략 연구**
-  - [ ] Cross-encoder 기반 재순위화
-  - [ ] 검색된 문서 간 관련성 분석
-  - [ ] 1차 검색(1,000개) → 2차 정제 파이프라인
-  - [ ] Re-ranking 모델 성능 비교
+### 📊 **Priority 3: 시각화 및 분석**
 
-### 🤖 **Priority 3: Advanced RAG Implementations**
+- [ ] **t-SNE 임베딩 공간 시각화**
+  - [ ] 각 청커-임베딩 조합별 임베딩 공간 시각화
+  - [ ] 인터랙티브 시각화 구현 (Gradio)
+  - [ ] 체크박스 기반 조합 선택기
+  - [ ] 임베딩 공간 비교 분석 (질적 평가)
 
-- [ ] **다양한 RAG 아키텍처 구현**
-  - [ ] **Naive RAG**: 기본 검색-생성 파이프라인
-  - [ ] **Adaptive RAG**: 쿼리 복잡도에 따른 적응적 검색
-  - [ ] **Corrective RAG**: 검색 결과 품질 기반 수정 메커니즘
-  - [ ] **Self-RAG**: 자체 평가 및 개선 시스템
-  - [ ] **Agentic RAG**: 에이전트 기반 다단계 추론
-
-- [ ] **특화된 RAG 기법**
-  - [ ] **HyDE (Hypothetical Document Embeddings)**: 가상 문서 기반 검색
-  - [ ] **Branched RAG**: 다중 경로 검색 및 통합
-  - [ ] **RAG with Memory**: 대화 컨텍스트 유지 시스템
-  - [ ] **Multi-hop RAG**: 다단계 추론 체인
+- [ ] **실험 결과 대시보드**
+  - [ ] 성능 메트릭 시각화
+  - [ ] 실험 결과 다운로드 기능
+  - [ ] 청커-임베딩 성능 매트릭스
 
 ---
 
-## 🧠 **Phase 4: Multi-Agent Systems (FUTURE)**
+## 🔬 **Phase 4: RAG System Integration (PLANNED)**
 
-### 🔍 **Priority 1: DeepResearch Agent**
+### 🎯 **Priority 1: 최적 Retriever 통합**
 
-- [ ] **자동 연구 에이전트 개발**
-  - [ ] 프롬프트 자동 생성 및 최적화
-  - [ ] 다중 쿼리 전략 수립
-  - [ ] 연구 결과 종합 및 분석
-  - [ ] 연구 보고서 자동 생성
+- [ ] **최고 성능 조합 식별**
+  - [ ] 성능 기반 Top-K 청커-임베딩 조합 선정
+  - [ ] 도메인별 최적 조합 분석
+  - [ ] 효율성 vs 정확도 trade-off 분석
 
-### 📝 **Priority 2: System Prompt Learning**
+- [ ] **통합 RAG 시스템 구축**
+  - [ ] 최적 조합 기반 RAG 파이프라인
+  - [ ] Re-ranking 통합 (필요 시)
+  - [ ] 성능 검증 및 최종 평가
 
-- [ ] **프롬프트 최적화 멀티-에이전트**
-  - [ ] 프롬프트 성능 자동 평가
-  - [ ] 진화적 프롬프트 개선
-  - [ ] A/B 테스트 자동화
-  - [ ] 도메인별 프롬프트 특화
+### 📝 **Priority 2: Documentation & Reproducibility**
 
----
-
-## 📊 **Phase 5: Evaluation & Benchmarking**
-
-### 🏆 **Priority 1: Comprehensive Evaluation**
-
-- [ ] **성능 벤치마킹**
-  - [ ] 검색 정확도 (Recall@K, Precision@K)
-  - [ ] 생성 품질 (BLEU, ROUGE, BERTScore)
-  - [ ] 추론 일관성 (Faithfulness, Consistency)
-  - [ ] 사용자 만족도 평가
-
-- [ ] **효율성 분석**
-  - [ ] 계산 비용 대비 성능 분석
-  - [ ] 메모리 사용량 최적화
-  - [ ] 응답 속도 벤치마킹
-  - [ ] 확장성 테스트
-
-### 📈 **Priority 2: Academic Contribution**
-
-- [ ] **연구 논문 작성**
-  - [ ] 포괄적 청킹-임베딩 조합 연구 논문
-  - [ ] Knee Retrieval 효과성 분석 논문
-  - [ ] Multi-Agent RAG 시스템 제안서
-  - [ ] 학회 발표 준비
+- [ ] **연구 결과 문서화**
+  - [ ] 실험 결과 종합 보고서
+  - [ ] 최적 설정 가이드라인
+  - [ ] 재현성 확보를 위한 상세 문서화
 
 ---
 
-## ⚠️ **Known Issues & Technical Debt**
+## 📊 **Phase 5: Academic Contribution**
+
+### 🏆 **Priority 1: 연구 논문 작성**
+
+- [ ] **핵심 논문 작성**
+  - [ ] "포괄적 청킹-임베딩 조합의 RAG 성능 영향 분석"
+  - [ ] 실험 설계 및 방법론 상세화
+  - [ ] 통계적 유의성 검증 및 결과 분석
+  - [ ] 학술지 투고 준비
+
+### 📈 **Priority 2: 추가 연구 방향**
+
+- [ ] **확장 연구 계획**
+  - [ ] Knee Retrieval 효과성 분석
+  - [ ] 다국어 문서에서의 성능 비교
+  - [ ] 도메인 특화 최적화 전략
+
+---
+
+## ⚠️ **Known Issues & Technical Considerations**
 
 ### 🐛 **Current Issues**
 
-- [ ] **민준 선배 이슈 해결**
-  - [ ] 대량 매뉴얼 처리 시 성능 저하 문제
-  - [ ] 청크 사이즈 동적 조정 vs Knee Retrieval 적용
-  - [ ] 메모리 효율성 개선
+- [ ] **대량 문서 처리 최적화**
+  - [ ] 민준 선배 이슈: 전체 매뉴얼 처리 시 성능 저하
+  - [ ] 메모리 효율성 개선 (청킹 + 임베딩 동시 처리)
+  - [ ] GPU 메모리 관리 최적화
 
 ### 🔧 **Technical Improvements**
 
-- [ ] **코드 품질 개선**
-  - [ ] 단위 테스트 커버리지 확대
-  - [ ] 에러 핸들링 강화
-  - [ ] 로깅 시스템 개선
-  - [ ] 문서화 업데이트
+- [ ] **실험 안정성 향상**
+  - [ ] 실험 중단 시 재개 기능 강화
+  - [ ] 에러 핸들링 및 로깅 개선
+  - [ ] 실험 진행률 모니터링 시스템
 
 ---
 
 ## 🎯 **Success Metrics**
 
-### 📊 **Quantitative Goals**
+### 📊 **Phase별 정량적 목표**
 
-- **실험 완료률**: 28,560개 실험 중 95% 이상 성공
-- **성능 개선**: 베이스라인 대비 검색 정확도 20% 향상
-- **효율성**: Multi-GPU 환경에서 7배 이상 속도 향상
-- **논문 게재**: 최소 2편의 학술 논문 투고
+#### **Phase 2: Data Generation**
+- **청킹 완료율**: 4,760개 조합 중 95% 이상 성공
+- **QA 생성 품질**: 청크당 평균 3개 이상의 고품질 QA 쌍
+- **임베딩 완료율**: 28,560개 조합 중 95% 이상 성공
+- **처리 효율성**: Multi-GPU 환경에서 7배 이상 속도 향상
 
-### 🏆 **Qualitative Goals**
+#### **Phase 3: RAG Performance Evaluation**
+- **성능 측정 완료**: 모든 조합에 대한 Recall@K, Precision@K 측정
+- **최적 조합 식별**: Top 10% 성능 조합 명확히 식별
+- **베이스라인 개선**: all-MiniLM-L6 대비 20% 이상 성능 향상 조합 발견
 
-- **학술적 기여**: RAG 시스템의 새로운 접근법 제시
-- **실용적 가치**: 법적 문서 분석의 정확도 향상
-- **기술적 혁신**: Multi-Agent 기반 연구 자동화 시스템
-- **오픈소스 기여**: 재현 가능한 실험 프레임워크 공개
+### 🏆 **최종 목표**
+
+- **학술적 기여**: 청킹-임베딩 조합 효과에 대한 포괄적 분석 논문 1편
+- **실용적 가치**: 법적 문서용 최적 Retriever 구성 가이드라인
+- **재현성**: 완전한 실험 재현 가능한 오픈소스 프레임워크
 
 ---
 
-## 📅 **Timeline**
+## 📅 **Revised Timeline**
 
-- **Q1 2025**: Phase 2 완료 (실험 실행 및 시각화)
-- **Q2 2025**: Phase 3 완료 (고급 RAG 시스템)
-- **Q3 2025**: Phase 4 진행 (Multi-Agent 시스템)
-- **Q4 2025**: Phase 5 완료 (평가 및 논문 작성)
+- **Q1 2025**: Phase 2 완료 (데이터 생성 - 청킹, QA, 임베딩)
+- **Q2 2025**: Phase 3 완료 (RAG 성능 평가)
+- **Q3 2025**: Phase 4 완료 (최적 시스템 통합)
+- **Q4 2025**: Phase 5 완료 (논문 작성 및 발표)
 
 ---
 
@@ -207,4 +201,5 @@
 ---
 
 *Last Updated: 2025-09-03*
-*Current Phase: Phase 2 (Experiment Execution)*
+*Current Phase: Phase 2 (Data Generation)*
+*Focus: 청킹 → QA 생성 → 임베딩 데이터셋 구축*
