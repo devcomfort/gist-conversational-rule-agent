@@ -1,0 +1,161 @@
+# 실험에 사용할 임베딩 모델 설정
+# MTEB 벤치마크 기준 (2025년 8월 30일) - TODO.txt 참조
+# 참조: https://huggingface.co/spaces/mteb/leaderboard
+
+embeddings:
+  # MTEB 2위 - 최고 성능 모델 (대용량)
+  qwen3_8b:
+    model_name: "Qwen/Qwen3-Embedding-8B"
+    db_name: "faiss_qwen3_embedding_8b"
+    dimension: 1024
+    mteb_rank: 2
+    description: "Qwen3 Embedding 8B - MTEB 2위 (최고 성능)"
+    model_kwargs:
+      device: "auto"  # 자동 CUDA 감지, CPU 폴백
+      trust_remote_code: true
+      torch_dtype: "float16"  # 메모리 절약
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 16  # 대용량 모델이므로 배치 크기 축소
+    memory_requirement_gb: 8.0
+    computational_cost: "high"
+
+  # MTEB 4위 - 고성능 모델 (효율적)
+  qwen3_0_6b:
+    model_name: "Qwen/Qwen3-Embedding-0.6B"
+    db_name: "faiss_qwen3_embedding_0.6b"
+    dimension: 1024
+    mteb_rank: 4
+    description: "Qwen3 Embedding 0.6B - MTEB 4위 (효율적 고성능)"
+    model_kwargs:
+      device: "auto"
+      trust_remote_code: true
+      torch_dtype: "float16"
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 32
+    memory_requirement_gb: 2.5
+    computational_cost: "medium"
+
+  # MTEB 22위 - 균형잡힌 성능
+  jina_v3:
+    model_name: "jinaai/jina-embeddings-v3"
+    db_name: "faiss_jina_embeddings_v3"
+    dimension: 1024
+    mteb_rank: 22
+    description: "Jina Embeddings v3 - MTEB 22위 (균형잡힌 성능)"
+    model_kwargs:
+      device: "auto"
+      trust_remote_code: true
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 32
+    memory_requirement_gb: 1.8
+    computational_cost: "medium"
+
+  # MTEB 23위 - 다국어 지원
+  bge_m3:
+    model_name: "BAAI/bge-m3"
+    db_name: "faiss_bge_m3"
+    dimension: 1024
+    mteb_rank: 23
+    description: "BGE M3 - MTEB 23위 (다국어 지원)"
+    model_kwargs:
+      device: "auto"
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 32
+    memory_requirement_gb: 2.0
+    computational_cost: "medium"
+
+  # MTEB 117위 - 빠르고 경량 (기준선)
+  all_minilm_l6:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    db_name: "faiss_all_minilm_l6_v2"
+    dimension: 384
+    mteb_rank: 117
+    description: "All MiniLM L6 v2 - MTEB 117위 (경량 기준선)"
+    model_kwargs:
+      device: "auto"
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 64  # 경량 모델이므로 큰 배치 가능
+    memory_requirement_gb: 0.5
+    computational_cost: "low"
+
+  # 다국어 특화 모델 (한국어 성능 우수)
+  multilingual_e5:
+    model_name: "intfloat/multilingual-e5-small"
+    db_name: "faiss_multilingual_e5_small"
+    dimension: 384
+    mteb_rank: 45  # 다국어 기준
+    description: "Multilingual E5 Small - 다국어 특화 (한국어 최적화)"
+    model_kwargs:
+      device: "auto"
+    encode_kwargs:
+      normalize_embeddings: true
+      batch_size: 64
+    memory_requirement_gb: 0.4
+    computational_cost: "low"
+
+# 실험 우선순위 설정
+experiment_priority:
+  # 최고 성능 모델군 (정확도 최우선)
+  top_tier:
+    - "qwen3_8b"    # MTEB 2위 - 최고 성능
+    - "qwen3_0_6b"  # MTEB 4위 - 효율적 고성능
+  
+  # 고성능 모델군 (정확도 우선)
+  high_performance:
+    - "jina_v3"     # MTEB 22위 - 균형잡힌 성능
+    - "bge_m3"      # MTEB 23위 - 다국어 지원
+  
+  # 효율성 모델군 (속도/메모리 우선)  
+  efficient:
+    - "multilingual_e5"  # 45위 - 다국어 특화
+    - "all_minilm_l6"    # 117위 - 경량 기준선
+
+# 자동 CUDA/CPU 설정 (torch.cuda.is_available 기반)
+device_configuration:
+  preferred_device: "cuda"  # CUDA 선호하지만 CPU로 폴백
+  fallback_device: "cpu"
+  auto_mixed_precision: true  # float16 자동 최적화
+  memory_fraction: 0.8  # GPU 메모리 80%까지 사용
+
+# 모델별 상세 요구사항
+model_specifications:
+  qwen3_8b:
+    min_memory_gb: 8.0
+    recommended_memory_gb: 12.0
+    max_batch_size_gpu: 16
+    max_batch_size_cpu: 4
+    
+  qwen3_0_6b:
+    min_memory_gb: 2.5
+    recommended_memory_gb: 4.0
+    max_batch_size_gpu: 32
+    max_batch_size_cpu: 8
+    
+  jina_v3:
+    min_memory_gb: 1.8
+    recommended_memory_gb: 3.0
+    max_batch_size_gpu: 32
+    max_batch_size_cpu: 8
+    
+  bge_m3:
+    min_memory_gb: 2.0
+    recommended_memory_gb: 3.5
+    max_batch_size_gpu: 32
+    max_batch_size_cpu: 8
+    
+  all_minilm_l6:
+    min_memory_gb: 0.5
+    recommended_memory_gb: 1.0
+    max_batch_size_gpu: 64
+    max_batch_size_cpu: 16
+    
+  multilingual_e5:
+    min_memory_gb: 0.4
+    recommended_memory_gb: 1.0
+    max_batch_size_gpu: 64
+    max_batch_size_cpu: 16

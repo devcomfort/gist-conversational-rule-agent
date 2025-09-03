@@ -1,0 +1,136 @@
+# Chonkie 청커별 실험 파라미터 설정
+# 각 청커의 핵심 파라미터들을 변경하며 성능을 측정
+
+chunkers:
+  # 토큰 기반 청커
+  token:
+    _target_: chonkie.TokenChunker
+    tokenizer:
+      - "character"      # 문자 기반 (기본)
+      - "gpt2"           # GPT-2 토크나이저 (BPE)
+      - "cl100k_base"    # GPT-4 토크나이저 (tiktoken, 최신)
+    chunk_size: 
+      - 256
+      - 512
+      - 1024
+      - 2048
+    chunk_overlap:
+      - 0
+      - 50
+      - 100
+
+  # 문장 기반 청커
+  sentence:
+    _target_: chonkie.SentenceChunker
+    tokenizer_or_token_counter:
+      - "character"      # 문자 기반 (기본)
+      - "gpt2"           # GPT-2 토크나이저 (BPE)
+      - "cl100k_base"    # GPT-4 토크나이저 (tiktoken, 최신)
+    chunk_size:
+      - 512
+      - 1024
+      - 2048
+    chunk_overlap: 0
+    min_sentences_per_chunk:
+      - 1
+      - 2
+      - 3
+    min_characters_per_sentence:
+      - 12
+      - 24
+      - 50
+    approximate: false
+    delim: [". ", "! ", "? ", "\n"]
+    include_delim: "prev"
+
+  # 지연 청커 (임베딩 기반)
+  late:
+    _target_: chonkie.LateChunker
+    embedding_model: "all"  # embedding_models.yaml의 모든 모델 사용
+    chunk_size:
+      - 512
+      - 1024
+      - 2048
+    min_characters_per_chunk:
+      - 24
+      - 50
+      - 100
+
+  # 신경망 기반 청커
+  neural:
+    _target_: chonkie.NeuralChunker
+    model: "mirth/chonky_distilbert_base_uncased_1"  # 기본 모델
+    device_map: "auto"
+    min_characters_per_chunk:
+      - 10
+      - 24
+      - 50
+    stride: null
+
+  # 재귀 청커
+  recursive:
+    _target_: chonkie.RecursiveChunker
+    tokenizer_or_token_counter:
+      - "character"      # 문자 기반 (기본)
+      - "gpt2"           # GPT-2 토크나이저 (BPE)
+      - "cl100k_base"    # GPT-4 토크나이저 (tiktoken, 최신)
+    chunk_size:
+      - 512
+      - 1024
+      - 2048
+    min_characters_per_chunk:
+      - 24
+      - 50
+      - 100
+
+  # 의미론적 청커
+  semantic:
+    _target_: chonkie.SemanticChunker
+    embedding_model: "all"  # embedding_models.yaml의 모든 모델 사용
+    threshold:
+      - 0.6
+      - 0.7
+      - 0.8
+      - 0.9
+    chunk_size:
+      - 512
+      - 1024
+      - 2048
+    similarity_window:
+      - 1
+      - 3
+      - 5
+    min_sentences_per_chunk:
+      - 1
+      - 2
+    min_characters_per_sentence: 24
+    delim: [". ", "! ", "? ", "\n"]
+    include_delim: "prev"
+    skip_window: 0
+    filter_window: 5
+    filter_polyorder: 3
+    filter_tolerance: 0.2
+
+# ===================================
+# 토크나이저 확장 후 실험 조합 수 계산
+# ===================================
+# 정리된 조합 수 (embedding_model: "all" 적용 후):
+#
+# Token Chunker: 3 tokenizers × 4 chunk_sizes × 3 chunk_overlaps = 36개
+# Sentence Chunker: 3 tokenizers × 3 chunk_sizes × 1 overlap × 3 min_sentences × 3 min_characters = 81개  
+# Late Chunker: 6 embedding_models × 3 chunk_sizes × 3 min_characters = 54개
+# Neural Chunker: 기존 그대로 (~220개, 신경망 모델 의존)
+# Recursive Chunker: 3 tokenizers × 3 chunk_sizes × 3 min_characters = 27개
+# Semantic Chunker: 6 embedding_models × 4 thresholds × 3 chunk_sizes × 3 windows × 2 min_sentences = 432개
+#
+# embedding_model: "all" 설정으로 embedding_models.yaml의 6개 모델 모두 자동 적용:
+# - qwen3_8b, qwen3_0_6b, jina_v3, bge_m3, all_minilm_l6, multilingual_e5
+#
+# 레거시 토크나이저 제거 (p50k_base, r50k_base):
+# - OpenAI가 cl100k_base로 업그레이드한 현시점에서 과거 버전은 불필요
+# - character, gpt2, cl100k_base만 유지하여 핵심 토크나이징 방식 커버
+#
+# 최종 정리된 토크나이저:
+# - character: 기본 문자 기반
+# - gpt2: BPE 방식 (여전히 널리 사용)
+# - cl100k_base: OpenAI GPT-4 최신 토크나이저
