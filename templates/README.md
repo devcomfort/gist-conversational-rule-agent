@@ -7,13 +7,19 @@ system_prompts/
 ├── legal_agent_system_prompt.mustache  # 법률 에이전트 시스템 프롬프트
 
 templates/
-├── legal_query_template.mustache       # 법률 질의응답 템플릿
-└── README.md                          # 이 파일
+├── legal_query_template.mustache       # 법률 질의응답 템플릿 (상세 버전)
+├── legal_query_template_simple.mustache # 법률 질의응답 템플릿 (간소 버전)
+├── refine_markdown.mustache            # 마크다운 정제 템플릿
+├── ACADEMIC_ANALYSIS.md               # 학술적 분석 보고서
+├── TEMPLATE_COMPARISON.md             # 템플릿 버전별 상세 비교
+
+├── RESEARCH_SUMMARY.md               # 연구 요약 및 핵심 지표
+└── README.md                         # 이 파일
 ```
 
 ## 🎯 템플릿 변수 설명
 
-### `legal_query_template.mustache`
+### `legal_query_template.mustache` (상세 버전)
 
 | 변수명 | 타입 | 설명 | 필수 |
 |--------|------|------|------|
@@ -21,6 +27,21 @@ templates/
 | `document_count` | number | 검색된 관련 문서 개수 | ✅ |
 | `context_documents` | array | RAG로 검색된 관련 문서들 | ✅ |
 | `query_timestamp` | string | 질의 시점 (ISO format) | ❌ |
+| `current_datetime` | string | 처리 시점 (ISO format) | ❌ |
+| `multiple_regulations` | boolean | 복수 법령 적용 여부 (조건부 섹션 제어) | ❌ |
+
+### `legal_query_template_simple.mustache` (간소 버전)
+
+간소 버전은 상세 버전과 동일한 변수를 사용하지만, 더 단순한 구조로 렌더링됩니다:
+
+- **해석 방법론**: 16개 → 3개로 단순화
+- **논증 단계**: 5단계 → 3단계로 축소  
+- **조문 인용**: 완전 인용 → 핵심 요약
+- **반박 논점**: 체계적 검토 → 미포함
+
+**사용 권장 사항:**
+- **상세 버전**: 법무팀, 복잡한 법리 해석, 전문가 대상
+- **간소 버전**: 일반 사용자, 빠른 확인, 단순한 질의
 
 ### `context_documents` 배열 내 객체 구조
 
@@ -211,9 +232,86 @@ def get_legal_response(user_query, retrieved_docs):
    - mustache의 `{{#field}}` 문법 확인
    - `null`이나 `undefined` 값 처리
 
+---
+
+## 📊 학술적 분석 문서
+
+템플릿 디렉토리에는 RAG 시스템의 적응적 복잡도 제어에 대한 학술적 연구 문서들이 포함되어 있습니다.
+
+### 📚 분석 문서 개요
+
+#### `RESEARCH_SUMMARY.md` - 연구 요약
+- **목적**: 핵심 연구 가설 및 예상 결과 요약
+- **대상**: 연구자, 의사결정자, 빠른 이해가 필요한 독자
+- **내용**: 핵심 지표, 이론적 기반, 실험 설계, 기대 효과
+
+#### `ACADEMIC_ANALYSIS.md` - 상세 학술 분석  
+- **목적**: 포괄적 이론적 배경 및 방법론 제시
+- **대상**: 학술 연구자, 논문 작성자, 심층 분석 필요자
+- **내용**: 인지과학적 근거, 법학교육학적 원리, 실험 설계, 기대 기여도
+
+#### `TEMPLATE_COMPARISON.md` - 템플릿 상세 비교
+- **목적**: 두 버전 간의 구체적 차이점 정량적 분석  
+- **대상**: 시스템 설계자, 개발자, 기술 연구자
+- **내용**: 구조적 복잡도, 기능적 차이, UX 차이, 실험 설계
+
+
+
+### 🎯 활용 방법
+
+#### 연구 목적별 추천 문서
+
+```
+📖 학술 논문 작성 시:
+   RESEARCH_SUMMARY.md → ACADEMIC_ANALYSIS.md → TEMPLATE_COMPARISON.md
+
+📊 실험 설계 시:
+   ACADEMIC_ANALYSIS.md → TEMPLATE_COMPARISON.md → RESEARCH_SUMMARY.md
+
+📈 성과 평가 및 분석 시:
+   TEMPLATE_COMPARISON.md → ACADEMIC_ANALYSIS.md → RESEARCH_SUMMARY.md
+```
+
+#### 주요 연구 질문과 해당 문서
+
+| 연구 질문 | 주요 참조 문서 | 핵심 섹션 |
+|-----------|----------------|-----------|
+| "사용자 전문성이 RAG 성능에 미치는 영향은?" | ACADEMIC_ANALYSIS.md | 인지과학적 근거 |  
+| "복잡도 차별화의 정량적 효과는?" | TEMPLATE_COMPARISON.md | 정량적 비교 지표 |
+| "실험은 어떻게 설계해야 하나?" | ACADEMIC_ANALYSIS.md | 실험적 검증 가능성 |
+| "기대되는 학술적 기여는?" | RESEARCH_SUMMARY.md | 핵심 기여도 |
+| "두 템플릿의 구체적 차이는?" | TEMPLATE_COMPARISON.md | 기능적 차이 분석 |
+
+### 🔗 문서 간 연관성
+
+```mermaid
+graph TD
+    A[RESEARCH_SUMMARY.md] --> B[ACADEMIC_ANALYSIS.md]
+    A --> C[TEMPLATE_COMPARISON.md]  
+    
+    B --> C
+    
+    E[법률 템플릿 시스템] --> A
+    E --> C
+```
+
+**설명**:
+- **RESEARCH_SUMMARY**: 모든 문서의 **진입점** 역할, 핵심 가설과 결과 요약
+- **ACADEMIC_ANALYSIS**: **이론적 깊이** 제공, 인지과학적 근거와 실험 설계
+- **TEMPLATE_COMPARISON**: **정량적 근거** 제시, 구체적 차이점과 사용성 분석
+
+---
+
 ## 📞 지원
 
+### 일반 사용
 템플릿 사용 중 문제가 있거나 개선사항이 있다면:
 1. 이슈 트래커에 버그 리포트 등록
 2. 커스텀 템플릿 공유
 3. 개선 제안 제출
+
+### 학술 연구
+연구 관련 문의나 협력 제안:
+1. **데이터 공유**: 실험 데이터셋 및 결과 공유 가능
+2. **공동 연구**: 후속 연구나 확장 연구 협력  
+3. **기술 자문**: 구현 관련 기술적 자문 및 멘토링
