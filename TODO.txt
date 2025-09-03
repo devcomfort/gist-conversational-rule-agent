@@ -16,7 +16,8 @@ embedding models:
 > MTEB 벤치마크에서 경량 임베딩 모델들만 추려서 테스트에 사용
 > 모두 ~0.5B 크기, 2025년 8월 30일 기준 순위를 함께 명시함
 > 참조: https://huggingface.co/spaces/mteb/leaderboard
-- 3위: Qwen/Qwen3-Embedding-0.6B
+- 2위: Qwen/Qwen3-Embedding-8B
+- 4위: Qwen/Qwen3-Embedding-0.6B
 - 22위: jinaai/jina-embeddings-v3
 - 23위: BAAI/bge-m3
 - 117위: sentence-transformers/all-MiniLM-L6-v2
