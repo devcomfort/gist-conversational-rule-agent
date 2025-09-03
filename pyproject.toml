@@ -88,9 +88,15 @@ dependencies = [
     "structlog>=25.4.0",
     "olefile>=0.47",
     "matplotlib>=3.10.6",
+    "fastembed>=0.7.3",
+    "polars>=1.33.0",
+    "torch>=2.8.0",
+    "transformers<4.50",
+    "python-pptx>=1.0.2",
 ]
 
 [dependency-groups]
 dev = [
     "dvc>=3.62.0",
+    "dvc-s3>=3.0.1",  # DVC S3 백엔드 지원
 ]

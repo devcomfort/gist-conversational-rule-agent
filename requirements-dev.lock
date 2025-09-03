@@ -133,6 +133,8 @@ fastapi==0.116.1
     # via gradio
 fastavro==1.12.0
     # via cohere
+fastembed==0.7.3
+    # via gist-conversational-rule-agent
 ffmpy==0.6.1
     # via gradio
 filelock==3.19.1
@@ -214,6 +216,7 @@ httpx-sse==0.4.0
 huggingface-hub==0.34.4
     # via accelerate
     # via chonkie
+    # via fastembed
     # via gist-conversational-rule-agent
     # via gradio
     # via gradio-client
@@ -378,6 +381,7 @@ llama-index-workflows==1.3.0
 llama-parse==0.6.54
     # via llama-index-readers-llama-parse
 loguru==0.7.3
+    # via fastembed
     # via gist-conversational-rule-agent
 magika==0.6.2
     # via chonkie
@@ -394,6 +398,7 @@ mdurl==0.1.2
     # via markdown-it-py
 mmh3==5.2.0
     # via chromadb
+    # via fastembed
 model2vec==0.6.0
     # via chonkie
 mpmath==1.3.0
@@ -422,6 +427,7 @@ numpy==2.3.2
     # via chromadb
     # via contourpy
     # via faiss-cpu
+    # via fastembed
     # via gist-conversational-rule-agent
     # via gradio
     # via kneed
@@ -481,6 +487,7 @@ omegaconf==2.3.0
     # via hydra-core
 onnxruntime==1.22.1
     # via chromadb
+    # via fastembed
     # via magika
 openai==1.102.0
     # via chonkie
@@ -537,6 +544,7 @@ pandas==2.3.2
     # via gradio
     # via llama-index-readers-file
 pillow==11.3.0
+    # via fastembed
     # via gist-conversational-rule-agent
     # via gradio
     # via llama-index-core
@@ -569,6 +577,8 @@ protobuf==6.32.0
     # via weaviate-client
 psutil==7.0.0
     # via accelerate
+py-rust-stemmers==0.1.5
+    # via fastembed
 pyasn1==0.6.1
     # via pyasn1-modules
     # via rsa
@@ -673,6 +683,7 @@ regex==2025.7.34
 requests==2.32.5
     # via azure-core
     # via cohere
+    # via fastembed
     # via gist-conversational-rule-agent
     # via google-genai
     # via huggingface-hub
@@ -781,6 +792,7 @@ tokenizers==0.21.4
     # via chonkie
     # via chromadb
     # via cohere
+    # via fastembed
     # via langchain-huggingface
     # via litellm
     # via model2vec
@@ -797,6 +809,7 @@ torch==2.8.0
 tqdm==4.67.1
     # via chonkie
     # via chromadb
+    # via fastembed
     # via huggingface-hub
     # via llama-index-core
     # via model2vec
