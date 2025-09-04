@@ -6,17 +6,34 @@ from typing import Callable, TypeVar, ParamSpec
 from loguru import logger
 
 P = ParamSpec("P")
+"""ParamSpec P: 래핑 대상 함수의 매개변수 시그니처를 보존하기 위한 타입 파라미터."""
+
 R = TypeVar("R")
+"""TypeVar R: 래핑 대상 함수의 반환 타입을 나타내는 타입 파라미터."""
 
 
-def log_duration(stage_name: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
-    """단계 함수 데코레이터: 시작/완료와 경과시간(ms) 로깅.
+def log_elapsed_time(stage_name: str) -> Callable[[Callable[P, R]], Callable[P, R]]:
+    """[Deprecated] log_elapsed_time로 대체 예정.
 
-    Args:
-        stage_name: 로그에 표시할 단계 이름
+    단계 함수 데코레이터: 시작/완료와 경과 시간(ms)을 로깅합니다.
+    새 코드에서는 `log_elapsed_time`을 사용하세요.
 
-    Returns:
-        데코레이터: 원래 함수 시그니처를 보존한 래퍼 반환
+    Parameters
+    ----------
+    stage_name : str
+        로그에 표시할 단계 이름
+
+    Returns
+    -------
+    Callable[[Callable[P, R]], Callable[P, R]]
+        원래 함수 시그니처를 보존한 데코레이터
+
+    Type Variables
+    --------------
+    P : ParamSpec
+        데코레이터가 감싸는 원본 함수의 매개변수 시그니처를 보존하기 위한 타입 파라미터
+    R : TypeVar
+        원본 함수의 반환 타입을 나타내는 타입 파라미터
     """
 
     def _decorator(func: Callable[P, R]) -> Callable[P, R]:
