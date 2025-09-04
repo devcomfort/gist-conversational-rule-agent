@@ -14,6 +14,9 @@ Example:
     >>> tokenizer = create_tokenizer("bert-base-uncased")
     >>> tokenizer = create_tokenizer("gpt2")
     >>> tokenizer = create_tokenizer("Qwen/Qwen2-7B")
+
+참고:
+- 사용 가능한 모델은 Hugging Face Models에서 확인하세요: https://huggingface.co/models
 """
 
 from transformers import AutoTokenizer
