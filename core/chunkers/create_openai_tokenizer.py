@@ -13,6 +13,9 @@ Example:
     >>> enc = create_openai_tokenizer("cl100k_base")
     >>> ids = enc.encode("안녕하세요")
     >>> text = enc.decode(ids)
+
+참고:
+- 사용 가능한 tiktoken 인코딩은 tiktoken 저장소/문서에서 확인하세요: https://github.com/openai/tiktoken
 """
 
 import tiktoken
