@@ -94,6 +94,8 @@ dependencies = [
     "transformers<4.50",
     "python-pptx>=1.0.2",
     "tiktoken>=0.11.0",
+    "attrs>=25.3.0",
+    "cattrs>=25.2.0",
 ]
 
 [dependency-groups]
