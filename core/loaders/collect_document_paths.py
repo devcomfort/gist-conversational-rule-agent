@@ -4,7 +4,8 @@ import os
 from pathlib import Path
 from typing import Iterable, Iterator, List, Literal, overload
 
-from core.utils import is_document
+from core.utils.get_file_type import get_file_type
+from .supported_document import SUPPORTED_DOCUMENT_KIND
 
 
 def write_detection_log(
@@ -34,9 +35,12 @@ def write_detection_log(
             for name in filenames:
                 file_path = Path(dirpath) / name
                 try:
-                    kind = is_document(str(file_path))
-                    if kind is not None:
-                        fp.write(f"DETECTED\t{kind}\t{file_path}\n")
+                    file_type: tuple[str | None, str | None] | None = get_file_type(
+                        str(file_path)
+                    )
+                    ext = file_type[1] if file_type else None
+                    if ext in SUPPORTED_DOCUMENT_KIND:
+                        fp.write(f"DETECTED\t{ext}\t{file_path}\n")
                     else:
                         fp.write(f"IGNORED\t{file_path}\n")
                 except Exception as e:
@@ -49,24 +53,30 @@ def write_detection_log(
 def _iter_document_paths(root_path: Path) -> Iterator[Path]:
     """내부 제너레이터: 문서 파일 경로를 지연 평가로 반환합니다.
 
-    이 함수는 로깅이나 집계를 수행하지 않습니다. 문서 판별은
-    `utils.is_document` 결과가 존재하는 파일만 대상으로 합니다.
+    이 함수는 로깅이나 집계를 수행하지 않습니다. 파일 타입은
+    `core.utils.get_file_type.get_file_type`으로 추정하며,
+    `SUPPORTED_DOCUMENT_KIND`에 포함된 확장자만 대상으로 합니다.
     """
+    # Guard clause: 존재하지 않으면 빈 이터레이터 반환
     if not root_path.exists():
-        return
+        return iter(())
 
-    try:
-        for dirpath, _dirnames, filenames in os.walk(root_path):
-            for name in filenames:
-                file_path = Path(dirpath) / name
-                try:
-                    kind = is_document(str(file_path))
-                    if kind is not None:
-                        yield file_path
-                except Exception:
-                    continue
-    except Exception:
-        return
+    def _is_supported_document(path: Path) -> bool:
+        try:
+            file_type = get_file_type(str(path))
+            ext = file_type[1] if file_type else None
+            return ext in SUPPORTED_DOCUMENT_KIND
+        except Exception:
+            return False
+
+    # Generator expression: 안전한 판별 함수를 이용해 지연 필터링
+    return (
+        path
+        for dirpath, _dirnames, filenames in os.walk(root_path)
+        for name in filenames
+        for path in [Path(dirpath) / name]
+        if _is_supported_document(path)
+    )
 
 
 @overload
@@ -92,7 +102,7 @@ def collect_document_paths(
 ) -> Iterable[Path] | List[Path]:
     """루트 경로 하위에서 로드 가능한 문서 파일 경로를 수집합니다.
 
-    - 내부적으로 `utils.is_document`을 사용하여 문서 여부를 판별합니다.
+    - 내부적으로 `get_file_type()`과 `SUPPORTED_DOCUMENT_KIND`를 사용하여 지원 확장자만 필터링합니다.
     - `lazy=True`이면 지연 평가 가능한 Iterable을 반환하고, `lazy=False`이면 정렬된 리스트를 반환합니다.
 
     Args:

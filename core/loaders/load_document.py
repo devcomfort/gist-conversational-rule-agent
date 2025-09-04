@@ -3,8 +3,7 @@ from typing import List, Union
 
 from llama_index.core import Document
 
-from core.utils.file_validators import is_docx, is_hwp, is_pdf, is_pptx
-from core.utils import get_mime_type
+from core.utils.get_file_type import get_file_type
 
 from .load_docx import load_docx
 from .load_hwp import load_hwp
@@ -60,17 +59,26 @@ def load_document(path: Union[str, Path]) -> List[Document]:
     path_str = str(path)
 
     # 타입 가드를 사용한 파일 형식 검증 및 로더 호출
-    if is_pdf(path_str):
+    file_type = get_file_type(path_str)
+    mime = file_type[0] if file_type else None
+
+    if mime == "application/pdf":
         return load_pdf(path)
-    elif is_hwp(path_str):
+    elif mime in ("application/x-hwp", "application/vnd.hancom-hwp"):
         return load_hwp(path)
-    elif is_docx(path_str):
+    elif (
+        mime
+        == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ):
         return load_docx(path)
-    elif is_pptx(path_str):
+    elif (
+        mime
+        == "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    ):
         return load_pptx(path)
     else:
         # 지원하지 않는 형식인 경우 MIME 타입 정보와 함께 오류 발생
-        mime_type = get_mime_type(path)
+        mime_type = mime
         supported_formats = "PDF (.pdf), HWP (.hwp), DOCX (.docx), PPTX (.pptx)"
         raise ValueError(
             f"지원하지 않는 파일 형식: {mime_type}\n지원되는 형식: {supported_formats}"
