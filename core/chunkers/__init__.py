@@ -25,20 +25,38 @@ __all__ = [
 
 _EXPORT_MAP = {
     # token
-    "create_token_chunker": ("core.chunkers.create_token_chunker", "create_token_chunker"),
-    "TokenChunkerParameters": ("core.chunkers.create_token_chunker", "TokenChunkerParameters"),
+    "create_token_chunker": (
+        "core.chunkers.create_token_chunker",
+        "create_token_chunker",
+    ),
+    "TokenChunkerParameters": (
+        "core.chunkers.create_token_chunker",
+        "TokenChunkerParameters",
+    ),
     "ChunkOverlap": ("core.chunkers.create_token_chunker", "ChunkOverlap"),
     # recursive
-    "create_recursive_chunker": ("core.chunkers.create_recursive_chunker", "create_recursive_chunker"),
-    "RecursiveChunkerParameters": ("core.chunkers.create_recursive_chunker", "RecursiveChunkerParameters"),
+    "create_recursive_chunker": (
+        "core.chunkers.create_recursive_chunker",
+        "create_recursive_chunker",
+    ),
+    "RecursiveChunkerParameters": (
+        "core.chunkers.create_recursive_chunker",
+        "RecursiveChunkerParameters",
+    ),
     "normalize_tokenizer_for_recursive_chunker": (
         "core.chunkers.create_recursive_chunker",
         "normalize_tokenizer_for_recursive_chunker",
     ),
     "TokenizerInput": ("core.chunkers.create_recursive_chunker", "TokenizerInput"),
-    "TokenizerOrCharacter": ("core.chunkers.create_recursive_chunker", "TokenizerOrCharacter"),
+    "TokenizerOrCharacter": (
+        "core.chunkers.create_recursive_chunker",
+        "TokenizerOrCharacter",
+    ),
     # embeddings
-    "create_embedding_model": ("core.chunkers.create_embedding_model", "create_embedding_model"),
+    "create_embedding_model": (
+        "core.chunkers.create_embedding_model",
+        "create_embedding_model",
+    ),
 }
 
 
@@ -48,5 +66,3 @@ def __getattr__(name: str) -> Any:  # PEP 562
         module = import_module(module_path)
         return getattr(module, attr_name)
     raise AttributeError(f"module 'core.chunkers' has no attribute {name!r}")
-
-
