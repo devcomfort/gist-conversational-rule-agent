@@ -73,8 +73,8 @@ def create_recursive_chunker(
     Overlap 정책:
     - 모든 청커는 `chunk_overlap`을 정수(int) 또는 비율(float)로 받아들입니다.
     - `int`: 실제 오버랩 토큰 수로 사용됩니다.
-    - `float`: 비율로 해석되어 실제 오버랩은 \(chunk\_size \times chunk\_overlap\)로 계산됩니다.
-      예: \(100 \times 0.1 = 10\)
+    - `float`: 비율로 해석되어 실제 오버랩은 `chunk_size * chunk_overlap`로 계산됩니다.
+      예: `chunk_size=100`, `chunk_overlap=0.1`이면 실제 오버랩은 10입니다.
 
     Args:
         tokenizer_or_token_counter: `"character"` | 토크나이저 이름(`str`) | `Tokenizer`.
