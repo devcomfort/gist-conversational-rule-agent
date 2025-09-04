@@ -1,3 +1,6 @@
+from chonkie import AutoEmbeddings
+
+
 def create_embedding_model(model_name: str):
     """임베딩 모델을 생성합니다.
 
@@ -14,8 +17,6 @@ def create_embedding_model(model_name: str):
         >>> emb = create_embedding_model("Qwen/Qwen3-Embedding-8B")
     """
     try:
-        # 지연 임포트: 모듈 임포트 시점의 의존성 문제를 피하기 위해 함수 내부에서 임포트합니다.
-        from chonkie import AutoEmbeddings
         return AutoEmbeddings.get_embeddings(model_name)
     except Exception as e:
         # 친절한 가이드 포함 에러 메시지
