@@ -243,3 +243,6 @@ test.py
 
 # DVC Artifacts
 artifacts/
+
+# Test Log
+log
