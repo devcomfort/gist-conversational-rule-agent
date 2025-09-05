@@ -1697,8 +1697,10 @@ dependencies = [
     { name = "olefile" },
     { name = "omegaconf" },
     { name = "openai" },
+    { name = "pampy" },
     { name = "pandas" },
     { name = "pillow" },
+    { name = "pipe" },
     { name = "polars" },
     { name = "pymupdf" },
     { name = "pystache" },
@@ -1709,11 +1711,13 @@ dependencies = [
     { name = "sentence-transformers" },
     { name = "smolagents" },
     { name = "structlog" },
+    { name = "tabulate" },
     { name = "tavily-python" },
     { name = "tiktoken" },
     { name = "toolz" },
     { name = "torch" },
     { name = "transformers" },
+    { name = "typer" },
     { name = "typing-extensions" },
 ]
 
@@ -1757,8 +1761,10 @@ requires-dist = [
     { name = "olefile", specifier = ">=0.47" },
     { name = "omegaconf", specifier = ">=2.3.0" },
     { name = "openai", specifier = ">=1.101.0" },
+    { name = "pampy", specifier = ">=0.3.0" },
     { name = "pandas", specifier = ">=2.3.2" },
     { name = "pillow", specifier = ">=11.3.0" },
+    { name = "pipe", specifier = ">=2.2" },
     { name = "polars", specifier = ">=1.33.0" },
     { name = "pymupdf", specifier = ">=1.26.4" },
     { name = "pystache", specifier = ">=0.6.8" },
@@ -1769,11 +1775,13 @@ requires-dist = [
     { name = "sentence-transformers", specifier = ">=5.1.0" },
     { name = "smolagents", specifier = ">=1.21.2" },
     { name = "structlog", specifier = ">=25.4.0" },
+    { name = "tabulate", specifier = ">=0.9.0" },
     { name = "tavily-python", specifier = ">=0.7.11" },
     { name = "tiktoken", specifier = ">=0.11.0" },
     { name = "toolz", specifier = ">=1.0.0" },
     { name = "torch", specifier = ">=2.8.0" },
     { name = "transformers", specifier = "<4.50" },
+    { name = "typer", specifier = ">=0.16.1" },
     { name = "typing-extensions", specifier = ">=4.15.0" },
 ]
 
@@ -4102,6 +4110,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pampy"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4c/07/576e0f0ed7c7e8488930a0506fd54926c58b79e45eec400914a8e5edb242/pampy-0.3.0.tar.gz", hash = "sha256:82054212e4478fc22163c55321a3583eda9918aff4440eed6c197e872a2a667b", size = 16605, upload-time = "2019-11-07T15:54:37.161Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/98/87/c5484ec830cc014523662f34bb9ce73cc6f900a096aec7d88094b82ec0fb/pampy-0.3.0-py3-none-any.whl", hash = "sha256:304470a6562173096fc88c22dc0ab50401ca2e3875a8725ee510759ec8ba58ff", size = 17633, upload-time = "2019-11-07T15:54:35.264Z" },
+]
+
+[[package]]
 name = "pandas"
 version = "2.3.2"
 source = { registry = "https://pypi.org/simple" }
@@ -4258,6 +4275,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/f4/fb/e8a4063264953ead9e2b24d9b390152c60f042c951c47f4592e9996e57ff/pinecone_plugin_interface-0.0.7.tar.gz", hash = "sha256:b8e6675e41847333aa13923cc44daa3f85676d7157324682dc1640588a982846", size = 3370, upload-time = "2024-06-05T01:57:52.093Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3b/1d/a21fdfcd6d022cb64cef5c2a29ee6691c6c103c4566b41646b080b7536a5/pinecone_plugin_interface-0.0.7-py3-none-any.whl", hash = "sha256:875857ad9c9fc8bbc074dbe780d187a2afd21f5bfe0f3b08601924a61ef1bba8", size = 6249, upload-time = "2024-06-05T01:57:50.583Z" },
+]
+
+[[package]]
+name = "pipe"
+version = "2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/37/aef2cba01787ad8bd266705a95c23db0e9d0b7cd0e01582c969143892655/pipe-2.2.tar.gz", hash = "sha256:6a253198e3bc542ffaf0a4222376586bce8583b27a9ddbc2cfbaa554c049230d", size = 10456, upload-time = "2024-04-04T06:37:17.686Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1f/21/96f1508f67fadb4ab7e5df7c3389e4a2f03cba92f62846f99f6301cf0735/pipe-2.2-py3-none-any.whl", hash = "sha256:0a5c3202ff35122f69a34ccbd40c9658646f033cc941055304fe8bfa7e13376e", size = 9655, upload-time = "2024-04-04T06:37:16.383Z" },
 ]
 
 [[package]]
